@@ -23,6 +23,8 @@
       color: #f1f1f1;
     }
 
+
+
     .top-actions {
       display: flex;
       justify-content: space-between;
@@ -189,9 +191,33 @@
       color: #888;
       cursor: not-allowed;
     }
+    h1 {
+  font-family: 'Creepster', cursive;
+  font-size: 110px;
+  text-align: center;
+  margin-bottom: 20px;
+
+  /* Black fill with purple outline */
+  color: #000000; 
+  -webkit-text-stroke: 2px #bb86fc;
+
+  /* Extra creepy shadows */
+  text-shadow: 
+    3px 3px 6px #000000,
+    -3px -3px 6px #000000,
+    0 0 10px #6c3483,
+    0 0 20px #bb86fc,
+    0 0 40px #6c3483,
+    0 0 60px #000000;
+}
+
+
+
+
   </style>
 </head>
 <body>
+<h1>WEDNESDAY LIST</h1>
 
   <div class="top-actions">
     <div class="search-bar">
