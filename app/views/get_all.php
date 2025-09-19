@@ -5,7 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Records</title>
 
- 
+
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap" rel="stylesheet">
+
   <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
 
   <style>
@@ -192,24 +196,26 @@
       cursor: not-allowed;
     }
     h1 {
-  font-family: 'Creepster', cursive;
-  font-size: 110px;
+  font-family: 'Creepster', cursive; /* Creepy horror font */
+  font-size: 135px;
   text-align: center;
   margin-bottom: 20px;
+  letter-spacing: 3px;
 
-  /* Black fill with purple outline */
-  color: #000000; 
-  -webkit-text-stroke: 2px #bb86fc;
+  /* Black inside */
+  color: #000000;
 
-  /* Extra creepy shadows */
+  /* Bloody violet glow */
   text-shadow: 
-    3px 3px 6px #000000,
-    -3px -3px 6px #000000,
-    0 0 10px #6c3483,
-    0 0 20px #bb86fc,
-    0 0 40px #6c3483,
-    0 0 60px #000000;
+    0 0 8px #6a0dad,
+    0 0 16px #8e24aa,
+    0 0 32px #bb86fc,
+    0 0 48px #7b1fa2,
+    0 0 72px #4b0082;
 }
+
+
+
 
 
 
