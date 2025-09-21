@@ -225,7 +225,7 @@
 <body>
 <h1>WEDNESDAY LIST</h1>
 
-  <div class="top-actions">
+<div class="top-actions">
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="🔮 Search student...">
     </div>
@@ -235,25 +235,29 @@
   </div>
 
   <table id="studentsTable">
-    <tr>
-      <th>Id</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Email</th>
-      <th>Action</th>
-    </tr>
-    <?php foreach($students as $students): ?>
+    <thead>
       <tr>
-        <td><?= $students['id']; ?></td>
-        <td><?= $students['first_name']; ?></td>
-        <td><?= $students['last_name']; ?></td>
-        <td><?= $students['email']; ?></td>
-        <td>
-          <a href="<?= site_url('/update/'.$students['id']); ?>">Update</a> | 
-          <a href="<?= site_url('/delete/'.$students['id']); ?>" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
-        </td>
+        <th>Id</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Action</th>
       </tr>
-    <?php endforeach; ?>
+    </thead>
+    <tbody id="studentsBody">
+      <?php foreach($students as $student): ?>
+        <tr>
+          <td><?= $student['id']; ?></td>
+          <td><?= $student['first_name']; ?></td>
+          <td><?= $student['last_name']; ?></td>
+          <td><?= $student['email']; ?></td>
+          <td>
+            <a href="<?= site_url('/update/'.$student['id']); ?>">Update</a> | 
+            <a href="<?= site_url('/delete/'.$student['id']); ?>" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
+          </td>
+        </tr>
+      <?php endforeach; ?>
+    </tbody>
   </table>
 
   <div class="pagination">
@@ -261,15 +265,40 @@
   </div>
 
   <script>
-    document.getElementById('searchInput').addEventListener('keyup', function () {
-      let filter = this.value.toLowerCase();
-      let rows = document.querySelectorAll("#studentsTable tr:not(:first-child)");
+  document.getElementById('searchInput').addEventListener('keyup', function () {
+    let query = this.value.trim();
+    let tbody = document.getElementById('studentsBody');
 
-      rows.forEach(row => {
-        let text = row.textContent.toLowerCase();
-        row.style.display = text.includes(filter) ? "" : "none";
+    if (query === "") {
+      // Reload the page to restore full data and pagination
+      location.reload();
+      return;
+    }
+
+    fetch("<?= site_url('students/search'); ?>?q=" + encodeURIComponent(query))
+      .then(response => response.json())
+      .then(data => {
+        tbody.innerHTML = "";
+
+        if (data.length > 0) {
+          data.forEach(student => {
+            let row = `<tr>
+                          <td>${student.id}</td>
+                          <td>${student.first_name}</td>
+                          <td>${student.last_name}</td>
+                          <td>${student.email}</td>
+                          <td>
+                            <a href="<?= site_url('/update/'); ?>${student.id}">Update</a> | 
+                            <a href="<?= site_url('/delete/'); ?>${student.id}" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
+                          </td>
+                       </tr>`;
+            tbody.innerHTML += row;
+          });
+        } else {
+          tbody.innerHTML = `<tr><td colspan="5">No results found</td></tr>`;
+        }
       });
-    });
+  });
   </script>
 
 </body>

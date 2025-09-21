@@ -18,21 +18,19 @@ class StudentsModel extends Model {
     public function create($first_name, $last_name, $email) {
         $data = array(
             'first_name' => $first_name,
-            'last_name' => $last_name,
-            'email' => $email
+            'last_name'  => $last_name,
+            'email'      => $email
         );
-        return $this->db->table('students')->insert($data);
+        return $this->db->table($this->table)->insert($data);
     }   
 
     public function get_one($id){
-       return $this->db->table('students')->where('id', $id)->get();
+       return $this->db->table($this->table)->where('id', $id)->get();
     }
 
-    
-
-   public function delete($id) {
-       return $this->db->table('students')->where('id', $id)->delete();
-   }
+    public function delete($id) {
+       return $this->db->table($this->table)->where('id', $id)->delete();
+    }
 
     public function count_all_records()
     {
@@ -46,5 +44,21 @@ class StudentsModel extends Model {
         $sql = "SELECT * FROM {$this->table} WHERE 1=1 ORDER BY {$this->primary_key} ASC {$limit_clause}";
         $result = $this->db->raw($sql);
         return $result ? $result->fetchAll(PDO::FETCH_ASSOC) : [];
+    }
+
+    
+
+    public function search($q) {
+        if (empty($q)) {
+            return $this->db->table($this->table)
+                            ->limit(5)   // default limit
+                            ->get_all();
+        }
+
+        return $this->db->table($this->table)
+                        ->like('first_name', $q)
+                        ->or_like('last_name', $q)
+                        ->or_like('email', $q)
+                        ->get_all();
     }
 }
