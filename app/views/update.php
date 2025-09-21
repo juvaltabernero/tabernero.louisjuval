@@ -533,13 +533,9 @@
   <div class="creature-form-bottom-right">💀</div>
   <div class="creature-form-top-right">🌙</div>
 
-  <form action="<?=site_url('/update/'.segment(3));?>" method="POST">
+  <<form action="<?=site_url('/update/'.segment(3));?>" method="POST">
   <h2>UPDATE PORTAL</h2>
     <div class="form-grid">
-      <div class="form-group">
-        <label for="id">ID</label>
-        <input type="text" id="id" value="<?=$student['id'];?>" name="id" placeholder="Your ID">
-      </div>
       <div class="form-group">
         <label for="first_name">First Name</label>
         <input type="text" id="first_name" name="first_name" value="<?=$student['first_name'];?>" placeholder="Your first name">
@@ -561,7 +557,7 @@
         <a href="<?=site_url('get_all')?>">⬅ Back to Students</a>
       </div>
     </div>
-  </form>
+</form>
 </div>
 
 </body>
