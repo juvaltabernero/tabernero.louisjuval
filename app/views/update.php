@@ -504,7 +504,8 @@
   <div class="creature-form-bottom-right">💀</div>
   <div class="creature-form-top-right">🌙</div>
 
-  <form action="<?=site_url('/update/'.segment(3));?>" method="POST">
+  <form action="<?= site_url('/update/'.segment(2)); ?>" method="POST">
+
     <h2>UPDATE PORTAL</h2>
     
     <div class="form-group">
