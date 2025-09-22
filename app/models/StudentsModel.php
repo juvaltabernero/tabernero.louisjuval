@@ -31,12 +31,10 @@ class StudentsModel extends Model {
                         ->delete();
     }
 
-    /**
-     * Unified pagination + search (like Author_model::page)
-     */
+    
     public function page($q = '', $records_per_page = null, $page = null) {
         if (is_null($page)) {
-            // Return all if no pagination requested
+            
             return $this->db->table($this->table)->get_all();
         } else {
             $query = $this->db->table($this->table);
@@ -48,12 +46,12 @@ class StudentsModel extends Model {
                       ->or_like('email', '%'.$q.'%');
             }
 
-            // Clone query before applying pagination for total count
+            
             $countQuery = clone $query;
             $data['total_rows'] = $countQuery->select_count('*', 'count')
                                              ->get()['count'];
 
-            // Paginated records
+          
             $data['records'] = $query->pagination($records_per_page, $page)
                                      ->get_all();
 

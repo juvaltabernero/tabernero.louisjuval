@@ -525,7 +525,7 @@
     <input type="submit" value="Submit">
 
     <div class="actions">
-      <a class="back-link" href="<?=site_url('get_all')?>">⬅ Back to Students</a>
+      <a class="back-link" href="<?=site_url('get_all')?>">⬅ Back to HOME</a>
     </div>
   </form>
 </div>

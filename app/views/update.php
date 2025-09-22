@@ -525,7 +525,7 @@
     <input type="submit" value="Update Student">
 
     <div class="actions">
-      <a href="<?=site_url('get_all')?>">⬅ Back to Students</a>
+      <a href="<?=site_url('get_all')?>">⬅ Back to HOME</a>
     </div>
   </form>
 </div>

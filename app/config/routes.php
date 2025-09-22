@@ -43,11 +43,23 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 |
 */
 
+// Default route
 $router->get('/', 'StudentsController::get_all');
+
+// Students list + pagination
 $router->get('/get_all', 'StudentsController::get_all');
-$router->match('/create', 'StudentsController::create', array('GET', 'POST'));
-$router->match('/update', 'StudentsController::update', array('GET', 'POST'));
-$router->match('/update/{id}', 'StudentsController::update', array('GET', 'POST'));
-$router->match('/delete/{id}', 'StudentsController::delete', array('GET', 'POST'));
-$router->match('/get_all/{page}', 'StudentsController::get_all', array('GET', 'POST'));
-$router->match('students/search', 'StudentsController::search', array('GET', 'POST'));
+$router->get('/get_all/{page}', 'StudentsController::get_all');
+
+// Create student (form + submit)
+$router->match('/create', 'StudentsController::create', ['GET', 'POST']);
+
+// Update student (requires ID)
+$router->match('/update/{id}', 'StudentsController::update', ['GET', 'POST']);
+
+// Delete student (requires ID)
+$router->get('/delete/{id}', 'StudentsController::delete');
+
+// Search students
+$router->match('/students/search', 'StudentsController::search', ['GET', 'POST']);
+
+
