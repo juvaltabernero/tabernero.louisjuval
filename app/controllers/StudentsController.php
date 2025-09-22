@@ -60,12 +60,13 @@ class StudentsController extends Controller {
 
         // ✅ Pagination options
         $this->pagination->set_options([
-            'first_link'     => '⏮ First',
-            'last_link'      => 'Last ⏭',
-            'next_link'      => 'Next →',
-            'prev_link'      => '← Prev',
+            'first_link'     => '⏮ 🦇 First',
+            'last_link'      => 'Last ☠️ ⏭',
+            'next_link'      => 'Next 🕷️ →',
+            'prev_link'      => '← 🖤 Prev',
             'page_delimiter' => '&page='
         ]);
+        
         $this->pagination->set_theme('bootstrap'); // or tailwind, custom
 
         // ✅ Initialize pagination
