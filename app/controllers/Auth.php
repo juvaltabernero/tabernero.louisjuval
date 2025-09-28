@@ -106,7 +106,7 @@ class Auth extends Controller {
 				set_flash_alert('danger', $this->form_validation->errors());
 			}
 		}
-		$this->call->view('auth/new_password');
+		$this->call->view('auth/password_reset');
 	}
 
     public function set_new_password() {
