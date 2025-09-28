@@ -44,7 +44,8 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 */
 
 // Default route
-$router->get('/', 'StudentsController::get_all');
+
+$router->get('/students', 'StudentsController::get_all');
 
 // Students list + pagination
 $router->get('/get_all', 'StudentsController::get_all');
@@ -61,5 +62,15 @@ $router->get('/delete/{id}', 'StudentsController::delete');
 
 // Search students
 $router->match('/students/search', 'StudentsController::search', ['GET', 'POST']);
+
+$router->get('/', 'Auth');
+$router->get('/home', 'Home');
+$router->group('/auth', function() use ($router){
+    $router->match('/register', 'Auth::register', ['POST', 'GET']);
+    $router->match('/login', 'Auth::login', ['POST', 'GET']);
+    $router->get('/logout', 'Auth::logout');
+    $router->match('/password-reset', 'Auth::password_reset', ['POST', 'GET']);
+    $router->match('/set-new-password', 'Auth::set_new_password', ['POST', 'GET']);
+});
 
 
