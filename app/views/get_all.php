@@ -540,9 +540,11 @@
     ::-webkit-scrollbar-thumb:hover {
       background: linear-gradient(145deg, #bb86fc, #d6a1ff);
     }
+    
   </style>
 </head>
 <body>
+
 <h1>WEDNESDAY LIST</h1>
 
 <div class="top-actions">
@@ -553,10 +555,13 @@
       <button type="submit" class="btn-add">🔍 Search</button>
     </form>
   </div>
+
   <a href="<?= site_url('create') ?>">
     <button class="btn-add">+ Add Student</button>
   </a>
 </div>
+
+
 
 <div class="table-container">
   <table>
@@ -592,6 +597,10 @@
 
 <div class="pagination">
   <?= isset($page) ? $page : '' ?>
+</div>
+<!-- 🚪 Logout button sa baba -->
+<div class="bottom-logout">
+  <a href="<?= site_url('auth/logout') ?>" class="btn-logout">🚪 Logout</a>
 </div>
 
 </body>
