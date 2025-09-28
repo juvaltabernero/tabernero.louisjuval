@@ -10,6 +10,6 @@
                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateProfile" class="list-group-item"><i class="bi bi-person-lines-fill"></i> Update Profile</a>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#updatePassword" class="list-group-item"><i class="bi bi-pencil-square"></i> Change Password</a>
             </div>
-        </div>
+        </div>z
     </div>
 </div>

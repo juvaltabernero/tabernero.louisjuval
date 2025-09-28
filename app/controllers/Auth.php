@@ -63,7 +63,7 @@ class Auth extends Controller {
                     if($this->lauth->register($username, $email, $this->io->post('password'), $email_token)) {
                         $data = $this->lauth->login($email, $this->io->post('password'));
                         $this->lauth->set_logged_in($data);
-                        redirect('auth/login');
+                        redirect('home');
                     } else {
                         set_flash_alert('danger', config_item('SQLError'));
                     }
@@ -84,67 +84,78 @@ class Auth extends Controller {
 		$template = str_replace($search, $replace, $template);
 		$this->email->recipient($email);
 		$this->email->subject('Wenesday Reset Password'); //change based on subject
-		$this->email->sender('juvaltabernero@email.com'); //change based on sender email
-		$this->email->reply_to('juvaltabernero@email.com'); // change based on sender email
+		$this->email->sender('juvaltabernero@gmail.com'); //change based on sender email
+		$this->email->reply_to('juvaltabernero@gmail.com'); // change based on sender email
 		$this->email->email_content($template, 'html');
 		$this->email->send();
 	}
 
 	public function password_reset() {
-		if($this->form_validation->submitted()) {
-			$email = $this->io->post('email');
-			$this->form_validation
-				->name('email')->required()->valid_email();
-			if($this->form_validation->run()) {
-				if($token = $this->lauth->reset_password($email)) {
-					$this->send_password_token_to_email($email, $token);
-                    $this->session->set_flashdata(['alert' => 'is-valid']);
-				} else {
-					$this->session->set_flashdata(['alert' => 'is-invalid']);
-				}
-			} else {
-				set_flash_alert('danger', $this->form_validation->errors());
-			}
-		}
-		$this->call->view('auth/password_reset');
-	}
-
+        if ($this->form_validation->submitted()) {
+            $email = $this->io->post('email');
+            $this->form_validation
+                ->name('email')->required()->valid_email();
+    
+            if ($this->form_validation->run()) {
+                if ($token = $this->lauth->reset_password($email)) {
+                    // Send reset link via email
+                    $this->send_password_token_to_email($email, $token);
+    
+                    $this->session->set_flashdata('alert', 'is-valid');
+                } else {
+                    $this->session->set_flashdata('alert', 'is-invalid');
+                }
+            } else {
+                set_flash_alert('danger', $this->form_validation->errors());
+            }
+            redirect('auth/password-reset'); // <- always redirect to avoid resubmission
+        }
+    
+        $this->call->view('auth/password_reset');
+    }
+    
     public function set_new_password() {
-        if($this->form_validation->submitted()) {
+        if ($this->form_validation->submitted()) {
             $token = $this->io->post('token');
-			if(isset($token) && !empty($token)) {
-				$password = $this->io->post('password');
-				$this->form_validation
-					->name('password')
-						->required()
-						->min_length(8, 'New password must be atleast 8 characters.')
-					->name('re_password')
-						->required()
-						->min_length(8, 'Retype password must be atleast 8 characters.')
-						->matches('password', 'Passwords did not matched.');
-						if($this->form_validation->run()) {
-							if($this->lauth->reset_password_now($token, $password)) {
-								set_flash_alert('success', 'Password was successfully updated.');
-							} else {
-								set_flash_alert('danger', config_item('SQLError'));
-							}
-						} else {
-							set_flash_alert('danger', $this->form_validation->errors());
-						}
-			} else {
-				set_flash_alert('danger', 'Reset token is missing.');
-			}
-    	redirect('auth/set-new-password/?token='.$token);
+    
+            if (!empty($token)) {
+                $password = $this->io->post('password');
+                $this->form_validation
+                    ->name('password')
+                        ->required()
+                        ->min_length(8, 'New password must be at least 8 characters.')
+                    ->name('re_password')
+                        ->required()
+                        ->min_length(8, 'Retype password must be at least 8 characters.')
+                        ->matches('password', 'Passwords did not match.');
+    
+                if ($this->form_validation->run()) {
+                    if ($this->lauth->reset_password_now($token, $password)) {
+                        set_flash_alert('success', 'Password was successfully updated.');
+                        redirect('auth/login');
+                    } else {
+                        set_flash_alert('danger', config_item('SQLError'));
+                    }
+                } else {
+                    set_flash_alert('danger', $this->form_validation->errors());
+                }
+            } else {
+                set_flash_alert('danger', 'Reset token is missing.');
+            }
+    
+            redirect('auth/set-new-password/?token=' . urlencode($token));
         } else {
-             $token = $_GET['token'] ?? '';
-            if(! $this->lauth->get_reset_password_token($token) && (! empty($token) || ! isset($token))) {
+            $token = $_GET['token'] ?? '';
+    
+            // if token is invalid
+            if (!empty($token) && ! $this->lauth->get_reset_password_token($token)) {
                 set_flash_alert('danger', 'Invalid password reset token.');
             }
+    
             $this->call->view('auth/new_password');
         }
-		
-	}
-
+    }
+    
     public function logout() {
         if($this->lauth->set_logged_out()) {
             redirect('auth/login');

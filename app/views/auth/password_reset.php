@@ -146,35 +146,42 @@
     <?php include APP_DIR.'views/templates/nav_auth.php'; ?>
 
     <main>
-       <!-- LEFT: Reset Form -->
-<div class="form-wrapper">
+    <div class="form-wrapper">
     <div class="card">
         <div class="card-header">Reset Password</div>
         <div class="card-body">
-            <form method="POST" action="<?=site_url('auth/password-reset');?>">
+            <form method="POST" action="<?= site_url('auth/password-reset'); ?>">
                 <?php csrf_field(); ?>
+                <?php $alert = $LAVA->session->flashdata('alert'); ?>
 
                 <label for="email">Email Address</label>
-                <?php $LAVA =& lava_instance(); ?>
-                <input id="email" type="email" class="form-control <?=$LAVA->session->flashdata('alert');?>" name="email" required>
+                <input id="email" type="email" 
+                       class="form-control <?= $alert === 'is-invalid' ? 'is-invalid' : ($alert === 'is-valid' ? 'is-valid' : ''); ?>" 
+                       name="email" required>
 
-                <span class="invalid-feedback" role="alert">
-                    <strong>We can&#039;t find a user with that email address.</strong>
-                </span>
-                <span class="valid-feedback" role="alert">
-                    <strong>Reset password link was sent to your email.</strong>
-                </span>
+                <?php if ($alert === 'is-invalid'): ?>
+                    <span class="invalid-feedback" role="alert" style="display:block;">
+                        <strong>We can’t find a user with that email address.</strong>
+                    </span>
+                <?php endif; ?>
 
-                <button type="submit" class="btn btn-primary">Send Password Reset Link</button>
+                <?php if ($alert === 'is-valid'): ?>
+                    <span class="valid-feedback" role="alert" style="display:block;">
+                        <strong>Reset password link was sent to your email.</strong>
+                    </span>
+                <?php endif; ?>
 
-                <!-- Back to Home placed at bottom inside form -->
+                <button type="submit" class="btn btn-primary mt-3">Send Password Reset Link</button>
+
                 <div style="margin-top:15px; text-align:center;">
-                    <a href="<?=site_url("auth/login");?>">Back to Home</a>
+                    <a href="<?= site_url("auth/login"); ?>">Back to Home</a>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+
 
 
         <!-- RIGHT: Image -->
