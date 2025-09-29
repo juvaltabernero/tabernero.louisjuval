@@ -78,17 +78,35 @@ class Auth extends Controller {
     }
 
     private function send_password_token_to_email($email, $token) {
-		$template = file_get_contents(ROOT_DIR.PUBLIC_DIR.'/templates/reset_password_email.html');
-		$search = array('{token}', '{base_url}');
-		$replace = array($token, base_url());
-		$template = str_replace($search, $replace, $template);
-		$this->email->recipient($email);
-		$this->email->subject('Wenesday Reset Password'); //change based on subject
-		$this->email->sender('juvaltabernero@gmail.com'); //change based on sender email
-		$this->email->reply_to('juvaltabernero@gmail.com'); // change based on sender email
-		$this->email->email_content($template, 'html');
-		$this->email->send();
-	}
+        $template = file_get_contents(ROOT_DIR.PUBLIC_DIR.'/templates/reset_password_email.html');
+        $search = array('{token}', '{base_url}');
+        $replace = array($token, base_url());
+        $template = str_replace($search, $replace, $template);
+    
+        // Setup SMTP (example: Gmail)
+        $config = [
+            'protocol'  => 'smtp',
+            'smtp_host' => 'smtp.gmail.com',
+            'smtp_user' => 'juvaltabernero@gmail.com',
+            'smtp_pass' => 'xddg lipq fbcm xwed', // Gmail App Password, hindi normal password
+            'smtp_port' => 587,
+            'mailtype'  => 'html',
+            'charset'   => 'utf-8',
+            'newline'   => "\r\n"
+        ];
+        $this->email->initialize($config);
+    
+        $this->email->from('juvaltabernero@gmail.com', 'Wenesday App');
+        $this->email->to($email);
+        $this->email->subject('Wenesday Reset Password');
+        $this->email->message($template);
+    
+        if (!$this->email->send()) {
+            echo $this->email->print_debugger();
+            exit;
+        }
+    }
+    
 
 	public function password_reset() {
         if ($this->form_validation->submitted()) {
