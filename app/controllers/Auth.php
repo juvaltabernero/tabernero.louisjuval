@@ -76,24 +76,20 @@ class Auth extends Controller {
         }
         
     }
+
     private function send_password_token_to_email($email, $token) {
-        $template = file_get_contents(ROOT_DIR.PUBLIC_DIR.'/templates/reset_password_email.html');
-        $search = ['{token}', '{base_url}'];
-        $replace = [$token, base_url()];
-        $template = str_replace($search, $replace, $template);
-    
-        $this->email->sender('juvaltabernero@gmail.com');
-        $this->email->recipient($email);
-        $this->email->subject('Wenesday Reset Password');
-        $this->email->reply_to('juvaltabernero@gmail.com');
-        $this->email->email_content($template, 'html');
-    
-        if (!$this->email->send()) {
-            echo $this->email->get_debugger(); // kung supported ng lib mo
-            exit;
-        }
-    }
-    
+		$template = file_get_contents(ROOT_DIR.PUBLIC_DIR.'/templates/reset_password_email.html');
+		$search = array('{token}', '{base_url}');
+		$replace = array($token, base_url());
+		$template = str_replace($search, $replace, $template);
+		$this->email->recipient($email);
+		$this->email->subject('Wenesday Reset Password'); //change based on subject
+		$this->email->sender('juvaltabernero@gmail.com'); //change based on sender email
+		$this->email->reply_to('juvaltabernero@gmail.com'); // change based on sender email
+		$this->email->email_content($template, 'html');
+		$this->email->send();
+	}
+
 	public function password_reset() {
         if ($this->form_validation->submitted()) {
             $email = $this->io->post('email');
